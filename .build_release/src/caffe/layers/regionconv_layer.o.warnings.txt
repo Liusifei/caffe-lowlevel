@@ -1,0 +1,8 @@
+src/caffe/layers/regionconv_layer.cpp: In instantiation of ‘void caffe::RegionconvolutionLayer<Dtype>::Backward_cpu(const std::vector<caffe::Blob<Dtype>*>&, const std::vector<bool>&, const std::vector<caffe::Blob<Dtype>*>&) [with Dtype = float]’:
+src/caffe/layers/regionconv_layer.cpp:329:1:   required from here
+src/caffe/layers/regionconv_layer.cpp:279:18: warning: unused variable ‘output_col_data’ [-Wunused-variable]
+           Dtype* output_col_data = output_col_buffer_.mutable_cpu_data();
+                  ^
+src/caffe/layers/regionconv_layer.cpp: In instantiation of ‘void caffe::RegionconvolutionLayer<Dtype>::Backward_cpu(const std::vector<caffe::Blob<Dtype>*>&, const std::vector<bool>&, const std::vector<caffe::Blob<Dtype>*>&) [with Dtype = double]’:
+src/caffe/layers/regionconv_layer.cpp:329:1:   required from here
+src/caffe/layers/regionconv_layer.cpp:279:18: warning: unused variable ‘output_col_data’ [-Wunused-variable]

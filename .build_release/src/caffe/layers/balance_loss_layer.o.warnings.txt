@@ -1,0 +1,8 @@
+src/caffe/layers/balance_loss_layer.cpp: In instantiation of ‘void caffe::BalanceLossLayer<Dtype>::Backward_cpu(const std::vector<caffe::Blob<Dtype>*>&, const std::vector<bool>&, const std::vector<caffe::Blob<Dtype>*>&) [with Dtype = float]’:
+src/caffe/layers/balance_loss_layer.cpp:164:1:   required from here
+src/caffe/layers/balance_loss_layer.cpp:36:21: warning: unused variable ‘prob_data’ [-Wunused-variable]
+       const Dtype * prob_data = bottom[0]->cpu_data();
+                     ^
+src/caffe/layers/balance_loss_layer.cpp: In instantiation of ‘void caffe::BalanceLossLayer<Dtype>::Backward_cpu(const std::vector<caffe::Blob<Dtype>*>&, const std::vector<bool>&, const std::vector<caffe::Blob<Dtype>*>&) [with Dtype = double]’:
+src/caffe/layers/balance_loss_layer.cpp:164:1:   required from here
+src/caffe/layers/balance_loss_layer.cpp:36:21: warning: unused variable ‘prob_data’ [-Wunused-variable]

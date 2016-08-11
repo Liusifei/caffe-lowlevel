@@ -1,0 +1,8 @@
+src/caffe/util/math_functions.cpp: In instantiation of ‘void caffe::caffe_cpu_permute(const Dtype*, Dtype*, const int*, const int*, int, int) [with Dtype = float]’:
+src/caffe/util/math_functions.cpp:506:157:   required from here
+src/caffe/util/math_functions.cpp:479:6: warning: unused variable ‘n’ [-Wunused-variable]
+  int n=0;
+      ^
+src/caffe/util/math_functions.cpp: In instantiation of ‘void caffe::caffe_cpu_permute(const Dtype*, Dtype*, const int*, const int*, int, int) [with Dtype = double]’:
+src/caffe/util/math_functions.cpp:507:160:   required from here
+src/caffe/util/math_functions.cpp:479:6: warning: unused variable ‘n’ [-Wunused-variable]

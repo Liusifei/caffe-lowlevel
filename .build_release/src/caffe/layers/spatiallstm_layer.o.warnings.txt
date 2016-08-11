@@ -1,0 +1,20 @@
+src/caffe/layers/spatiallstm_layer.cpp: In instantiation of ‘void caffe::SpatialLstmLayer<Dtype>::Forward_cpu(const std::vector<caffe::Blob<Dtype>*>&, const std::vector<caffe::Blob<Dtype>*>&) [with Dtype = float]’:
+src/caffe/layers/spatiallstm_layer.cpp:455:1:   required from here
+src/caffe/layers/spatiallstm_layer.cpp:198:16: warning: unused variable ‘col_data’ [-Wunused-variable]
+         Dtype* col_data = col_buffer_.mutable_cpu_data();
+                ^
+src/caffe/layers/spatiallstm_layer.cpp: In instantiation of ‘void caffe::SpatialLstmLayer<Dtype>::Backward_cpu(const std::vector<caffe::Blob<Dtype>*>&, const std::vector<bool>&, const std::vector<caffe::Blob<Dtype>*>&) [with Dtype = float]’:
+src/caffe/layers/spatiallstm_layer.cpp:455:1:   required from here
+src/caffe/layers/spatiallstm_layer.cpp:318:20: warning: unused variable ‘col_diff’ [-Wunused-variable]
+             Dtype* col_diff = col_buffer_.mutable_cpu_diff();
+                    ^
+src/caffe/layers/spatiallstm_layer.cpp: In instantiation of ‘void caffe::SpatialLstmLayer<Dtype>::Forward_cpu(const std::vector<caffe::Blob<Dtype>*>&, const std::vector<caffe::Blob<Dtype>*>&) [with Dtype = double]’:
+src/caffe/layers/spatiallstm_layer.cpp:455:1:   required from here
+src/caffe/layers/spatiallstm_layer.cpp:198:16: warning: unused variable ‘col_data’ [-Wunused-variable]
+         Dtype* col_data = col_buffer_.mutable_cpu_data();
+                ^
+src/caffe/layers/spatiallstm_layer.cpp: In instantiation of ‘void caffe::SpatialLstmLayer<Dtype>::Backward_cpu(const std::vector<caffe::Blob<Dtype>*>&, const std::vector<bool>&, const std::vector<caffe::Blob<Dtype>*>&) [with Dtype = double]’:
+src/caffe/layers/spatiallstm_layer.cpp:455:1:   required from here
+src/caffe/layers/spatiallstm_layer.cpp:318:20: warning: unused variable ‘col_diff’ [-Wunused-variable]
+             Dtype* col_diff = col_buffer_.mutable_cpu_diff();
+                    ^

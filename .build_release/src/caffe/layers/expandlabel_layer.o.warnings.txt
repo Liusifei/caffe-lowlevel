@@ -1,0 +1,22 @@
+src/caffe/layers/expandlabel_layer.cpp: In instantiation of ‘void caffe::ExpandlabelLayer<Dtype>::LayerSetUp(const std::vector<caffe::Blob<Dtype>*>&, const std::vector<caffe::Blob<Dtype>*>&) [with Dtype = float]’:
+src/caffe/layers/expandlabel_layer.cpp:132:1:   required from here
+src/caffe/layers/expandlabel_layer.cpp:19:9: warning: unused variable ‘num’ [-Wunused-variable]
+     int num = bottom[0]->num();
+         ^
+src/caffe/layers/expandlabel_layer.cpp:20:9: warning: unused variable ‘height’ [-Wunused-variable]
+     int height = bottom[0]->height();
+         ^
+src/caffe/layers/expandlabel_layer.cpp:21:9: warning: unused variable ‘width’ [-Wunused-variable]
+     int width = bottom[0]->width();
+         ^
+src/caffe/layers/expandlabel_layer.cpp: In instantiation of ‘void caffe::ExpandlabelLayer<Dtype>::LayerSetUp(const std::vector<caffe::Blob<Dtype>*>&, const std::vector<caffe::Blob<Dtype>*>&) [with Dtype = double]’:
+src/caffe/layers/expandlabel_layer.cpp:132:1:   required from here
+src/caffe/layers/expandlabel_layer.cpp:19:9: warning: unused variable ‘num’ [-Wunused-variable]
+     int num = bottom[0]->num();
+         ^
+src/caffe/layers/expandlabel_layer.cpp:20:9: warning: unused variable ‘height’ [-Wunused-variable]
+     int height = bottom[0]->height();
+         ^
+src/caffe/layers/expandlabel_layer.cpp:21:9: warning: unused variable ‘width’ [-Wunused-variable]
+     int width = bottom[0]->width();
+         ^

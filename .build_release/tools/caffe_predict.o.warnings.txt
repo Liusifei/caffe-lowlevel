@@ -1,0 +1,76 @@
+tools/caffe_predict.cpp: In function ‘cv::Mat get_outputmap(const std::vector<std::vector<caffe::Blob<float>*, std::allocator<caffe::Blob<float>*> >, std::allocator<std::vector<caffe::Blob<float>*, std::allocator<caffe::Blob<float>*> > > >&, int, bool)’:
+tools/caffe_predict.cpp:161:7: warning: unused variable ‘count’ [-Wunused-variable]
+   int count = outblobs[0]->count(); 
+       ^
+tools/caffe_predict.cpp: In function ‘cv::Mat forwardNet(caffe::Net<float>&, std::string, cv::Mat, int, int, bool, bool)’:
+tools/caffe_predict.cpp:225:34: warning: unused variable ‘bottom_need_backward’ [-Wunused-variable]
+     const vector<vector<bool> >& bottom_need_backward = caffe_net.bottom_need_backward();
+                                  ^
+tools/caffe_predict.cpp: In function ‘std::vector<caffe::Blob<float>*, std::allocator<caffe::Blob<float>*> > extractNetfeature(caffe::Net<float>&, std::string, cv::Mat, int, int)’:
+tools/caffe_predict.cpp:257:7: warning: unused variable ‘input_height’ [-Wunused-variable]
+   int input_height = inputimg.rows;
+       ^
+tools/caffe_predict.cpp:258:7: warning: unused variable ‘input_width’ [-Wunused-variable]
+   int input_width = inputimg.cols;
+       ^
+tools/caffe_predict.cpp:275:34: warning: unused variable ‘bottom_need_backward’ [-Wunused-variable]
+     const vector<vector<bool> >& bottom_need_backward = caffe_net.bottom_need_backward();
+                                  ^
+tools/caffe_predict.cpp: In function ‘int test_saveimg()’:
+tools/caffe_predict.cpp:338:9: warning: unused variable ‘loss’ [-Wunused-variable]
+   float loss = 0;
+         ^
+tools/caffe_predict.cpp:340:13: warning: unused variable ‘start’ [-Wunused-variable]
+     clock_t start, finish;  
+             ^
+tools/caffe_predict.cpp:340:20: warning: unused variable ‘finish’ [-Wunused-variable]
+     clock_t start, finish;  
+                    ^
+tools/caffe_predict.cpp:341:12: warning: unused variable ‘t_start’ [-Wunused-variable]
+     time_t t_start, t_end;   
+            ^
+tools/caffe_predict.cpp:341:21: warning: unused variable ‘t_end’ [-Wunused-variable]
+     time_t t_start, t_end;   
+                     ^
+tools/caffe_predict.cpp: In function ‘int test_extractfeature()’:
+tools/caffe_predict.cpp:413:9: warning: unused variable ‘loss’ [-Wunused-variable]
+   float loss = 0;
+         ^
+tools/caffe_predict.cpp:415:13: warning: unused variable ‘start’ [-Wunused-variable]
+     clock_t start, finish;  
+             ^
+tools/caffe_predict.cpp:415:20: warning: unused variable ‘finish’ [-Wunused-variable]
+     clock_t start, finish;  
+                    ^
+tools/caffe_predict.cpp:416:12: warning: unused variable ‘t_start’ [-Wunused-variable]
+     time_t t_start, t_end;   
+            ^
+tools/caffe_predict.cpp:416:21: warning: unused variable ‘t_end’ [-Wunused-variable]
+     time_t t_start, t_end;   
+                     ^
+tools/caffe_predict.cpp: In function ‘int test_extract_one_feature()’:
+tools/caffe_predict.cpp:496:9: warning: unused variable ‘loss’ [-Wunused-variable]
+   float loss = 0;
+         ^
+tools/caffe_predict.cpp:498:13: warning: unused variable ‘start’ [-Wunused-variable]
+     clock_t start, finish;  
+             ^
+tools/caffe_predict.cpp:498:20: warning: unused variable ‘finish’ [-Wunused-variable]
+     clock_t start, finish;  
+                    ^
+tools/caffe_predict.cpp:499:12: warning: unused variable ‘t_start’ [-Wunused-variable]
+     time_t t_start, t_end;   
+            ^
+tools/caffe_predict.cpp:499:21: warning: unused variable ‘t_end’ [-Wunused-variable]
+     time_t t_start, t_end;   
+                     ^
+tools/caffe_predict.cpp: In function ‘int test_extractparam()’:
+tools/caffe_predict.cpp:547:10: warning: unused variable ‘inputcolorimg’ [-Wunused-variable]
+     bool inputcolorimg=true;
+          ^
+tools/caffe_predict.cpp:550:15: warning: unused variable ‘height’ [-Wunused-variable]
+     const int height =FLAGS_height;
+               ^
+tools/caffe_predict.cpp:551:15: warning: unused variable ‘width’ [-Wunused-variable]
+     const int width = FLAGS_width;
+               ^

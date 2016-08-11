@@ -1,0 +1,8 @@
+src/caffe/layers/bn_layer.cpp: In instantiation of ‘void caffe::BNLayer<Dtype>::Backward_cpu(const std::vector<caffe::Blob<Dtype>*>&, const std::vector<bool>&, const std::vector<caffe::Blob<Dtype>*>&) [with Dtype = float]’:
+src/caffe/layers/bn_layer.cpp:350:3:   required from here
+src/caffe/layers/bn_layer.cpp:228:18: warning: unused variable ‘bottom_data’ [-Wunused-variable]
+     const Dtype* bottom_data = bottom[0]->cpu_data();
+                  ^
+src/caffe/layers/bn_layer.cpp: In instantiation of ‘void caffe::BNLayer<Dtype>::Backward_cpu(const std::vector<caffe::Blob<Dtype>*>&, const std::vector<bool>&, const std::vector<caffe::Blob<Dtype>*>&) [with Dtype = double]’:
+src/caffe/layers/bn_layer.cpp:350:3:   required from here
+src/caffe/layers/bn_layer.cpp:228:18: warning: unused variable ‘bottom_data’ [-Wunused-variable]
