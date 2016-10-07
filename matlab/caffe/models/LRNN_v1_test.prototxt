@@ -1,0 +1,974 @@
+# ---------- filtering L0 prototxt ----------
+name: "LRNN_v1_test"
+# without bn layers
+# seperate RNNs
+# 3channel rgb with gradients
+input:"data"
+input_dim:1
+input_dim:5
+input_dim:256
+input_dim:256
+layer {
+  name: "slice1"
+  type: "Slice"
+  bottom: "data"
+  top: "rgb"
+  top: "grad"
+    slice_param{
+      slice_point:3
+  }
+}
+#-------------------------------------------------
+layer {
+  name:"silence"
+  type:"Silence"
+  bottom:"rgb"
+}
+#--------------------scale 0----------------------
+layer {
+  name: "conv0"
+  type: "Convolution"
+  bottom: "data"
+  top: "conv0"
+  param {
+    lr_mult: 1
+    decay_mult: 1
+  }
+  param {
+    lr_mult: 0
+    decay_mult: 0
+  }
+  convolution_param {
+    num_output: 3
+    kernel_size: 3
+    stride: 1
+    group : 1
+    pad: 1
+    weight_filler {
+      type: "xavier"
+    }
+    bias_filler {
+      type: "constant"
+          value:0
+    }
+  }
+}
+#--------------------scale 1----------------------
+layer {
+  name: "pool1"
+  type: "Pooling"
+  bottom: "conv0"
+  top: "pool1"
+  pooling_param {
+    pool: MAX
+    kernel_size: 2
+    stride: 2
+  }
+}
+#--------------------scale 2----------------------
+layer {
+  name: "pool2"
+  type: "Pooling"
+  bottom: "pool1"
+  top: "pool2"
+  pooling_param {
+    pool: MAX
+    kernel_size: 2
+    stride: 2
+  }
+}
+#--------------------scale 3----------------------
+layer {
+  name: "pool3"
+  type: "Pooling"
+  bottom: "pool2"
+  top: "pool3"
+  pooling_param {
+    pool: MAX
+    kernel_size: 2
+    stride: 2
+  }
+}
+#--------------------------upsample--------------------------
+layer {
+  name: "resize1"
+  type: "Resize"
+  bottom: "pool1"
+  top: "resize1"
+  resize_param {
+      #resize_ratio: 2.0
+      is_pyramid_test: true
+      out_height_scale: 2.0
+      out_width_scale: 2.0
+      #type: BILINEAR
+  }
+}
+layer {
+  name: "resize2"
+  type: "Resize"
+  bottom: "pool2"
+  top: "resize2"
+  resize_param {
+      #resize_ratio: 2.0
+      is_pyramid_test: true
+      out_height_scale: 4.0
+      out_width_scale: 4.0
+      #type: BILINEAR
+  }
+}
+layer {
+  name: "resize3"
+  type: "Resize"
+  bottom: "pool3"
+  top: "resize3"
+  resize_param {
+      #resize_ratio: 2.0
+      is_pyramid_test: true
+      out_height_scale: 8.0
+      out_width_scale: 8.0
+      #type: BILINEAR
+  }
+}
+layer {
+    name: "concat1"
+    type: "Concat"
+    bottom: "conv0"
+    bottom: "resize1"
+    bottom: "resize2"
+    bottom: "resize3"
+    top:  "concat1"
+}#[96,48,24,12], 4 channels
+layer {
+  name: "conv1"
+  type: "Convolution"
+  bottom: "concat1"
+  top: "conv1_2"
+  param {
+    lr_mult: 1
+    decay_mult: 1
+  }
+  param {
+    lr_mult: 0.01
+    decay_mult: 0
+  }
+  convolution_param {
+    num_output: 16
+    kernel_size: 3
+    stride: 1
+    group : 1
+    pad: 1
+    weight_filler {
+      type: "xavier"
+    }
+    bias_filler {
+      type: "constant"
+          value:0
+    }
+  }
+}
+#---------------------------edge-------------------------
+layer {
+  name: "conv2"
+  type: "Convolution"
+  bottom: "grad"
+  top: "conv2"
+  param {
+    lr_mult: 0.1
+    decay_mult: 1
+  }
+  param {
+    lr_mult: 0.0
+    decay_mult: 0
+  }
+  convolution_param {
+    num_output: 16
+    kernel_size:5
+    stride: 1
+    group : 1
+    pad: 2
+    weight_filler {
+      type: "xavier"
+    }
+    bias_filler {
+      type: "constant"
+          value:0
+    }
+  }
+}
+layer {
+  name: "relu2"
+  type: "ReLU"
+  bottom: "conv2"
+  top: "conv2"
+  relu_param{
+    negative_slope: 0.0
+  }
+}
+layer {
+  name: "pool4"
+  type: "Pooling"
+  bottom: "conv2"
+  top: "pool4"
+  pooling_param {
+    pool: MAX
+    kernel_size: 2
+    stride: 2
+  }
+}#48
+layer {
+  name: "conv3"
+  type: "Convolution"
+  bottom: "pool4"
+  top: "conv3"
+  param {
+    lr_mult: 1
+    decay_mult: 1
+  }
+  param {
+    lr_mult: 0.01
+    decay_mult: 0
+  }
+  convolution_param {
+    num_output: 32
+    kernel_size:3
+    stride: 1
+    group : 1
+    pad: 1
+    weight_filler {
+      type: "xavier"
+    }
+    bias_filler {
+      type: "constant"
+          value:0
+    }
+  }
+}
+layer {
+  name: "relu3"
+  type: "ReLU"
+  bottom: "conv3"
+  top: "conv3"
+  relu_param{
+    negative_slope: 0.0
+  }
+}
+layer {
+  name: "pool5"
+  type: "Pooling"
+  bottom: "conv3"
+  top: "pool5"
+  pooling_param {
+    pool: MAX
+    kernel_size: 2
+    stride: 2
+  }
+}#24
+layer {
+  name: "conv4"
+  type: "Convolution"
+  bottom: "pool5"
+  top: "conv4"
+  param {
+    lr_mult: 1
+    decay_mult: 1
+  }
+  param {
+    lr_mult: 0.01
+    decay_mult: 0
+  }
+  convolution_param {
+    num_output: 32
+    kernel_size: 3
+    stride: 1
+	group : 1
+	pad: 1
+    weight_filler {
+      type: "xavier"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+layer {
+  name: "relu4"
+  type: "ReLU"
+  bottom: "conv4"
+  top: "conv4"
+  relu_param{
+    negative_slope: 0.0
+  }
+}
+layer {
+  name: "pool6"
+  type: "Pooling"
+  bottom: "conv4"
+  top: "pool6"
+  pooling_param {
+    pool: MAX
+    kernel_size: 2
+    stride: 2
+  }
+}#12
+layer {
+  name: "conv5"
+  type: "Convolution"
+  bottom: "pool6"
+  top: "conv5"
+  param {
+    lr_mult: 1
+    decay_mult: 1
+  }
+  param {
+    lr_mult: 1
+    decay_mult: 0
+  }
+  convolution_param {
+    num_output: 32
+    kernel_size: 3
+    stride: 1
+	group : 1
+	pad: 1
+    weight_filler {
+      type: "xavier"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+layer {
+  name: "relu5"
+  type: "ReLU"
+  bottom: "conv5"
+  top: "conv5"
+  relu_param{
+    negative_slope: 0.0
+  }
+}
+layer {
+  name: "pool7"
+  type: "Pooling"
+  bottom: "conv5"
+  top: "pool7"
+  pooling_param {
+    pool: MAX
+    kernel_size: 2
+    stride: 2
+  }
+}#6
+layer {
+  name: "conv6"
+  type: "Convolution"
+  bottom: "pool7"
+  top: "conv6"
+  param {
+    lr_mult: 1
+    decay_mult: 1
+  }
+  param {
+    lr_mult: 1
+    decay_mult: 0
+  }
+  convolution_param {
+    num_output: 64
+    kernel_size: 3
+    stride: 1
+	group : 1
+	pad: 1
+    weight_filler {
+      type: "xavier"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+layer {
+  name: "relu6"
+  type: "ReLU"
+  bottom: "conv6"
+  top: "conv6"
+  relu_param{
+    negative_slope: 0.0
+  }
+}
+layer {
+  name: "resize5"
+  type: "Resize"
+  bottom: "conv6"
+  top: "conv6_re"
+  resize_param {
+      #resize_ratio: 2.0
+      is_pyramid_test: true
+      out_height_scale: 2.0
+      out_width_scale: 2.0
+      #type: BILINEAR
+  }
+}#12,64 channels
+layer {
+  name: "conv6s"
+  type: "Convolution"
+  bottom: "conv6_re"
+  top: "conv6s"
+  param {
+    lr_mult: 1
+    decay_mult: 1
+  }
+  param {
+    lr_mult: 1
+    decay_mult: 0
+  }
+  convolution_param {
+    num_output: 64
+    kernel_size: 3
+    stride: 1
+	group : 1
+	pad: 1
+    weight_filler {
+      type: "xavier"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+layer {
+  name: "relu6s"
+  type: "ReLU"
+  bottom: "conv6s"
+  top: "conv6s"
+  relu_param{
+    negative_slope: 0.0
+  }
+}
+layer {
+  name: "resize5s"
+  type: "Resize"
+  bottom: "conv6s"
+  top: "conv6s_re"
+  resize_param {
+      #resize_ratio: 2.0
+      is_pyramid_test: true
+      out_height_scale: 2.0
+      out_width_scale: 2.0
+      #type: BILINEAR
+  }
+}#24,64 channels
+layer {
+  name: "concat3"
+  type: "Concat"
+  bottom: "conv4"
+  bottom: "conv6s_re"
+  top: "concat3"
+}#24,96 channels
+layer {
+  name: "conv7"
+  type: "Convolution"
+  bottom: "concat3"
+  top: "conv7"
+  param {
+    lr_mult: 1
+    decay_mult: 1
+  }
+  param {
+    lr_mult: 1
+    decay_mult: 0
+  }
+  convolution_param {
+    num_output: 32
+    kernel_size: 3
+    stride: 1
+	group : 1
+	pad: 1
+    weight_filler {
+      type: "xavier"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+layer {
+  name: "relu7"
+  type: "ReLU"
+  bottom: "conv7"
+  top: "conv7"
+  relu_param{
+    negative_slope: 0.0
+  }
+}
+layer {
+  name: "resize6"
+  type: "Resize"
+  bottom: "conv7"
+  top: "conv7_re"
+  resize_param {
+      #resize_ratio: 2.0
+      is_pyramid_test: true
+      out_height_scale: 2.0
+      out_width_scale: 2.0
+      #type: BILINEAR
+  }
+}#48, 32 channels
+layer {
+  name: "concat4"
+  type: "Concat"
+  bottom: "conv3"
+  bottom: "conv7_re"
+  top: "concat4"
+}#48, 64 channels
+layer {
+  name: "conv8"
+  type: "Convolution"
+  bottom: "concat4"
+  top: "conv8"
+  param {
+    lr_mult: 1
+    decay_mult: 1
+  }
+  param {
+    lr_mult: 1
+    decay_mult: 0
+  }
+  convolution_param {
+    num_output: 16
+    kernel_size: 3
+    stride: 1
+	group : 1
+	pad: 1
+    weight_filler {
+      type: "xavier"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+layer {
+  name: "relu8"
+  type: "ReLU"
+  bottom: "conv8"
+  top: "conv8"
+  relu_param{
+    negative_slope: 0.0
+  }
+}
+layer {
+  name: "resize7"
+  type: "Resize"
+  bottom: "conv8"
+  top: "conv8_re"
+  resize_param {
+      #resize_ratio: 2.0
+      is_pyramid_test: true
+      out_height_scale: 2.0
+      out_width_scale: 2.0
+      #type: BILINEAR
+  }
+}#96, 16 channels
+layer {
+  name: "concat5"
+  type: "Concat"
+  bottom: "conv2"
+  bottom: "conv8_re"
+  top: "concat5"
+}#96, 32 channels
+layer {
+  name: "conv9"
+  type: "Convolution"
+  bottom: "concat5"
+  top: "conv9"
+  param {
+    lr_mult: 1
+    decay_mult: 1
+  }
+  param {
+    lr_mult: 1
+    decay_mult: 0
+  }
+  convolution_param {
+    num_output: 64
+    kernel_size: 3
+    stride: 1
+	group : 1
+	pad: 1
+    weight_filler {
+      type: "xavier"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+layer {
+  name: "tanh9"
+  type: "TanH"
+  bottom: "conv9"
+  top: "conv9"
+}
+layer {
+  name: "slice"
+  type: "Slice"
+  bottom: "conv9"
+  top: "conv4_bn_x1"
+  top: "conv4_bn_y1"
+  top: "conv4_bn_x2"
+  top: "conv4_bn_y2"
+  slice_param{
+      slice_point:16
+      slice_point:32
+      slice_point:48
+  }
+}
+#---------------------------RNN-1-------------------------
+layer {
+  name:"rnn1"
+  type:"GateRecurrent"
+  bottom:"conv1_2"
+  bottom:"conv4_bn_x1"
+  top:"rnn1"
+  param{
+     lr_mult: 0.1
+     decay_mult: 1
+   }
+   param {
+     lr_mult: 0.01
+     decay_mult: 0
+   }
+  gaterecurrent_param {
+     horizontal: true
+     reverse: false
+     active: LINEAR
+     num_output: 16
+     use_bias: false
+     use_wx: false
+     use_wh: false
+     restrict_g: 1.0
+     restrict_w: 0.5
+     weight_filler {
+       type: "xavier"
+     }
+     bias_filler {
+       type: "constant"
+       value: 0
+     }
+   }
+}
+layer {
+  name:"rnn2"
+  type:"GateRecurrent"
+  bottom:"conv1_2"
+  bottom:"conv4_bn_x1"
+  top:"rnn2"
+  param{
+     lr_mult: 0.1
+     decay_mult: 1
+   }
+   param {
+     lr_mult: 0.01
+     decay_mult: 0
+   }
+  gaterecurrent_param {
+     horizontal: true
+     reverse: true
+     active: LINEAR
+     num_output: 16
+     use_bias: false
+     use_wx: false
+     use_wh: false
+     restrict_g: 1.0
+     restrict_w: 0.5
+     weight_filler {
+       type: "xavier"
+      }
+      bias_filler {
+       type: "constant"
+       value: 0
+      }
+   }
+}
+layer {
+  name:"rnn3"
+  type:"GateRecurrent"
+  bottom:"conv1_2"
+  bottom:"conv4_bn_y1"
+  top:"rnn3"
+  param{
+     lr_mult: 0.1
+     decay_mult: 1
+   }
+   param {
+     lr_mult: 0.01
+     decay_mult: 0
+   }
+  gaterecurrent_param {
+     horizontal: false
+     reverse: false
+     active: LINEAR
+     num_output: 16
+     use_bias: false
+     use_wx: false
+     use_wh: false
+     restrict_g: 1.0
+     restrict_w: 0.5
+     weight_filler {
+       type: "xavier"
+     }
+     bias_filler {
+       type: "constant"
+       value: 0
+     }
+   }
+}
+layer {
+  name:"rnn4"
+  type:"GateRecurrent"
+  bottom:"conv1_2"
+  bottom:"conv4_bn_y1"
+  top:"rnn4"
+  param{
+     lr_mult: 0.1
+     decay_mult: 1
+   }
+   param {
+     lr_mult: 0.01
+     decay_mult: 0
+   }
+  gaterecurrent_param {
+     horizontal: false
+     reverse: true
+     active: LINEAR
+     num_output: 16
+     use_bias: false
+     use_wx: false
+     use_wh: false
+     restrict_g: 1.0
+     restrict_w: 0.5
+     weight_filler {
+       type: "xavier"
+     }
+     bias_filler {
+       type: "constant"
+       value: 0
+     }
+   }
+}
+#---------------------------RNN-2-------------------------
+layer {
+  name:"rnn5"
+  type:"GateRecurrent"
+  bottom:"rnn1"
+  bottom:"conv4_bn_x2"
+  top:"rnn5"
+  param{
+     lr_mult: 0.1
+     decay_mult: 1
+   }
+   param {
+     lr_mult: 0.01
+     decay_mult: 0
+   }
+  gaterecurrent_param {
+     horizontal: true
+     reverse: false
+     active: LINEAR
+     num_output: 16
+     use_bias: false
+     use_wx: false
+     use_wh: false
+     restrict_g: 1.0
+     restrict_w: 0.5
+     weight_filler {
+       type: "xavier"
+     }
+     bias_filler {
+       type: "constant"
+       value: 0
+     }
+   }
+}
+layer {
+  name:"rnn6"
+  type:"GateRecurrent"
+  bottom:"rnn2"
+  bottom:"conv4_bn_x2"
+  top:"rnn6"
+  param{
+     lr_mult: 0.1
+     decay_mult: 1
+   }
+   param {
+     lr_mult: 0.01
+     decay_mult: 0
+   }
+  gaterecurrent_param {
+     horizontal: true
+     reverse: true
+     active: LINEAR
+     num_output: 16
+     use_bias: false
+     use_wx: false
+     use_wh: false
+     restrict_g: 1.0
+     restrict_w: 0.5
+     weight_filler {
+       type: "xavier"
+      }
+      bias_filler {
+       type: "constant"
+       value: 0
+      }
+   }
+}
+layer {
+  name:"rnn7"
+  type:"GateRecurrent"
+  bottom:"rnn3"
+  bottom:"conv4_bn_y2"
+  top:"rnn7"
+  param{
+     lr_mult: 0.1
+     decay_mult: 1
+   }
+   param {
+     lr_mult: 0.01
+     decay_mult: 0
+   }
+  gaterecurrent_param {
+     horizontal: false
+     reverse: false
+     active: LINEAR
+     num_output: 16
+     use_bias: false
+     use_wx: false
+     use_wh: false
+     restrict_g: 1.0
+     restrict_w: 0.5
+     weight_filler {
+       type: "xavier"
+     }
+     bias_filler {
+       type: "constant"
+       value: 0
+     }
+   }
+}
+layer {
+  name:"rnn8"
+  type:"GateRecurrent"
+  bottom:"rnn4"
+  bottom:"conv4_bn_y2"
+  top:"rnn8"
+  param{
+     lr_mult: 0.1
+     decay_mult: 1
+   }
+   param {
+     lr_mult: 0.01
+     decay_mult: 0
+   }
+  gaterecurrent_param {
+     horizontal: false
+     reverse: true
+     active: LINEAR
+     num_output: 16
+     use_bias: false
+     use_wx: false
+     use_wh: false
+     restrict_g: 1.0
+     restrict_w: 0.5
+     weight_filler {
+       type: "xavier"
+     }
+     bias_filler {
+       type: "constant"
+       value: 0
+     }
+   }
+}
+layer {
+  name: "eltwisemax"
+  type: "Eltwise"
+  bottom: "rnn5"
+  bottom: "rnn6"
+  bottom: "rnn7"
+  bottom: "rnn8"
+  top: "eltwisemax"
+  eltwise_param {
+      operation: MAX
+  }
+}
+#---------------------------Output-----------------------
+layer {
+  name: "conv10"
+  type: "Convolution"
+  bottom: "eltwisemax"
+  top: "conv10"
+  param {
+    lr_mult: 1
+    decay_mult: 1
+  }
+  param {
+    lr_mult: 1
+    decay_mult: 1
+  }
+  convolution_param {
+    num_output: 64
+    kernel_size: 3
+    stride: 1
+    group : 1
+    pad:1
+    weight_filler {
+      type: "xavier"
+    }
+    bias_filler {
+      type: "constant"
+          value:0
+    }
+  }
+}
+layer {
+  name: "relu10"
+  type: "ReLU"
+  bottom: "conv10"
+  top: "conv10"
+  relu_param{
+    negative_slope: 0.0
+  }
+}
+layer {
+  name: "conv11"
+  type: "Convolution"
+  bottom: "conv10"
+  top: "conv11"
+  param {
+    lr_mult: 1
+    decay_mult: 1
+  }
+  param {
+    lr_mult: 1
+    decay_mult: 1
+  }
+  convolution_param {
+    num_output: 3
+    kernel_size: 3
+    stride: 1
+    group : 1
+    pad:1
+    weight_filler {
+      type: "xavier"
+    }
+    bias_filler {
+      type: "constant"
+          value:0
+    }
+  }
+}
+layer {
+  name: "sigmoid11"
+  type: "Sigmoid"
+  bottom: "conv11"
+  top: "sigmoid11"
+  loss_weight: 1
+}

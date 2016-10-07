@@ -1,0 +1,12 @@
+hi
+
+   附件是带有mex的一个包，已经生成好了。在我gpu机器上是可以直接运行里面的 demo_jointWMF.m  , 结果会存在本地的result.png
+ 
+    如果我们机器环境库什么的有差别，你可能要试试自己编译一遍。我的做法如下：
+     1  找了一台有能用的matlab 和opencv 的gpu机器
+      2 进入 \JointWMF_mex\complete_mex\x64 这个目录，将compileMex.m 里面的第6行改成  lib1 = fullfile(libPath,'libopencv_core.so');
+      3 用locate 搜一下gpu机器上的 libopencv_core.so， 并将这个lib 拷贝到 当前目录下的lib子目录中
+      4 运行compileMex.m
+
+Best
+Ji

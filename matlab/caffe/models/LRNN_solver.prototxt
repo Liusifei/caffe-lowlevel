@@ -1,0 +1,19 @@
+# net can be changed to "v2" accordingly
+net: "../models/LRNN_v1.prototxt"
+test_iter: 20
+test_interval: 500 
+base_lr: 0.0001
+momentum: 0.9 
+weight_decay: 0.0001
+solver_type: SGD 
+lr_policy: "poly"
+clip_gradients: 50
+power: 2
+gamma: 0.1 
+stepsize: 20000
+display: 10
+max_iter: 20000
+snapshot: 10000
+snapshot_prefix: "../models/LRNN"
+solver_mode: GPU 
+device_id: 0
