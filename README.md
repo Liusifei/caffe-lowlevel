@@ -75,8 +75,11 @@ layer {
 
 ## Scripts and pre-trained models
 All scripts are developed using matlab scripts, and can be found in matlab/caffe/scripts. Users can use DEMO_TRAIN to learn their own models. For training other filters that are not provided, please put the existing filter functions in matlab/caffe/utils.
+
 To use the pre-trained models, users should first download them using get_model.sh in matlab/caffe/models, and then use DEMO_TEST to generate the results of any images. Note that the shock filter has different architectures with the others, using LRNN_v2.prototxt, so one should change the LRNN_solver.prototxt first in training/applying the pre-trained model. 
+
 An additional net LRNN_v3.prototxt is provided, which can replace the v1 and achieve the similar performance with even more efficient structure. Note that we do not provide the pre-trained model for this version, however, users can obtain the model simply by training this model using DEMO_TRAIN, without adjusting any solver parameter.
+
 User should put their own training set path, which can be any kind of images, in DEMO_TRAIN. Usually 10 thousands random images are far enough to train a good model.
 
 ## Citations
