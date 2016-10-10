@@ -1,7 +1,7 @@
 
 ## ECCV-Learning Recursive Filter for Low-Level Vision via a Hybrid Network
 
-Released in 10/10/2016.
+Released in 10/10/2016. The codes are based on [caffe](https://github.com/BVLC/caffe).
 
 ## Description
 
@@ -80,9 +80,11 @@ User should put their own training set path, which can be any kind of images, in
 
 ## Citations
 Please cite this paper in your publications if it helps your research:
+```
 @inproceedings{liu2016learning,
   title={Learning Recursive Filters for Low-Level Vision via a Hybrid Neural Network},
   author={Sifei Liu and Jinshan Pan and Ming-Hsuan Yang},
   booktitle={European Conference on Computer Vision},
   year={2016},
 }
+```
