@@ -11,7 +11,7 @@ We will introduce the layers for linear recurrent network and the main script in
 ## Layers
 The four-directional linear recurrent networks are done by a newly implemented layer “class GateRecurrentLayer”, with the type of “GateRecurrent". The users can either clone the whole package, or added the relative declaration in hpp, the “gaterecurrent_layer.cpp/cu”, as well as the relative id and message from “caffe.proto” into their own caffe package.
 The basic configuration in prototxt is:
-
+```
 layer {
   name:"rnn1"
   type:"GateRecurrent"
@@ -45,18 +45,19 @@ layer {
      }
    }
 }
-
+```
 In the original implementations, the convolutional weight matrix and the bias, which are similar to the vanilla RNN are also implemented. Since they are not used in the paper, the parameters of “use_bias”, “use_wx”, “use_wh”, “restrict_w” are not used. Similarly, the fields of “param”, “weight_filler”, “bias_filler” can be left as default since not been used either. The “restrict_g” should set to 1 to make the system stable (there is a TANH for the topmost layer of gate, which also aims to keep the system stable), and the active should set to “LINEAR” in this work. 
 
 This layer can also be used as spatial vanilla RNN using different settings, however, it is beyond the scope of this work.
 The parallel and cascaded connections are illustrated as follows, more examples can be found in matlab/caffe/models.
 
 ### Parallel connection
-
+```
 layer { name: “rnn1” type: “GateRecurrent” bottom: “data” bottom: “gate1” top: “rnn1”…}
 layer { name: “rnn2” type: “GateRecurrent” bottom: “rnn1” bottom: “gate2” top: “rnn2”…}
-
+```
 ### Cascade connection
+```
 layer { name: “rnn1” type: “GateRecurrent” bottom: “data” bottom: “gate1” top: “rnn1”…}
 layer { name: “rnn2” type: “GateRecurrent” bottom: “data” bottom: “gate2” top: “rnn2”…}
 …
@@ -70,7 +71,7 @@ layer {
       operation: SUM
   }
 }
-
+```
 
 ## Scripts and pre-trained models
 All scripts are developed using matlab scripts, and can be found in matlab/caffe/scripts. Users can use DEMO_TRAIN to learn their own models. For training other filters that are not provided, please put the existing filter functions in matlab/caffe/utils.
