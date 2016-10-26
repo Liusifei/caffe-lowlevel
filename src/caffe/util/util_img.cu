@@ -179,7 +179,7 @@ __global__ void kernel_GetBiLinearResizeMatRules(const int nthreads,  const int 
 }
 
 
-
+/*
 template <typename Dtype>
 __global__ void kernel_ResizeBlob(const int nthreads,const int num,const int channels, const Dtype* src, const int src_height, const int src_width,
 		Dtype* dst, const int dst_height, const int dst_width, const Dtype scale_h, const Dtype scale_w)
@@ -227,6 +227,59 @@ __global__ void kernel_ResizeBlob(const int nthreads,const int num,const int cha
 
 		dst_data[dst_idx] = res;
 	}
+}*/
+
+// new version by Sifei Liu
+template <typename Dtype>
+__global__ void kernel_ResizeBlob(const int nthreads,const int num,const int channels, const Dtype* src, const int src_height, const int src_width,
+        Dtype* dst, const int dst_height, const int dst_width, const Dtype scale_h, const Dtype scale_w)
+{
+    CUDA_KERNEL_LOOP(index, nthreads) {
+        int d_i = index %( dst_height * dst_width);
+        int d_c = (index/(dst_height * dst_width))%channels;
+        int d_n = (index/(dst_height * dst_width))/channels;
+
+        int s_c = (index/(src_height * src_width))%channels;
+        int s_n = (index/(src_height * src_width))/channels;
+
+        int src_offset = (s_n * channels + s_c) * src_height * src_width;
+        int dst_offset = (d_n * channels + d_c) * dst_height * dst_width;
+
+        const Dtype* src_data = src+src_offset;
+        Dtype* dst_data = dst+dst_offset;
+
+        int dst_h = d_i /dst_width;
+        Dtype fh = dst_h * scale_h;
+        const int src_h = floor(fh);
+        fh -= src_h;
+        const Dtype w_h0 = std::abs(1.0f - fh);
+        const Dtype w_h1 = std::abs(fh);
+
+        const int dst_offset_1 =  dst_h * dst_width;
+        const int src_offset_1 =  src_h * src_width;
+
+        int dst_w = d_i %dst_width;
+        Dtype fw = dst_w * scale_w;
+        const int src_w = floor(fw);
+        fw -= src_w;
+        const Dtype w_w0 = std::abs(1.0f - fw);
+        const Dtype w_w1 = std::abs(fw);
+
+        const int dst_idx = dst_offset_1 + dst_w;
+
+        const int src_idx = src_offset_1 + src_w;
+        Dtype res = (w_h0 * w_w0 * src_data[src_idx]);
+
+        if (src_w + 1 < src_width)
+            res += (w_h0 * w_w1 * src_data[src_idx + 1]);
+        if (src_h + 1 < src_height)
+            res += (w_h1 * w_w0 * src_data[src_idx + src_width]);
+
+        if (src_w + 1 < src_width && src_h + 1 < src_height)
+            res += (w_h1 * w_w1 * src_data[src_idx + src_width + 1]);
+
+        dst_data[dst_idx] = res;
+    }
 }
 
 
