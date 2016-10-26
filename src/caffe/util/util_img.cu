@@ -179,7 +179,7 @@ __global__ void kernel_GetBiLinearResizeMatRules(const int nthreads,  const int 
 }
 
 
-/*
+
 template <typename Dtype>
 __global__ void kernel_ResizeBlob(const int nthreads,const int num,const int channels, const Dtype* src, const int src_height, const int src_width,
 		Dtype* dst, const int dst_height, const int dst_width, const Dtype scale_h, const Dtype scale_w)
@@ -227,8 +227,9 @@ __global__ void kernel_ResizeBlob(const int nthreads,const int num,const int cha
 
 		dst_data[dst_idx] = res;
 	}
-}*/
+}
 
+/*
 // new version by Sifei Liu
 template <typename Dtype>
 __global__ void kernel_ResizeBlob(const int nthreads,const int num,const int channels, const Dtype* src, const int src_height, const int src_width,
@@ -280,7 +281,7 @@ __global__ void kernel_ResizeBlob(const int nthreads,const int num,const int cha
 
         dst_data[dst_idx] = res;
     }
-}
+}*/
 
 
 template <typename Dtype>
